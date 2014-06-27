@@ -1,6 +1,7 @@
 <?php
 class SalesOrder extends Eloquent {
 
+
 	/* Soft Delete */
 	protected $softDelete = true;
 
@@ -23,14 +24,17 @@ class SalesOrder extends Eloquent {
 	public static function boot()
 	{
 		parent::boot();
-	 
+
+			
 		static::creating(function($record)
 		{
-			$record->code = 'SO-'.date('Y-m-d-H-i-s');
+			$salesorder = SalesOrder::orderBy('id', 'desc')->first();
+			$next_id = $salesorder->id;
+			$record->code = 'SO-'.date('y').'-'.$next_id;
 			$record->is_paid = 'No';
 		});
 	}
-	
+
 
 	/* Disabled Basic Actions */
 	public static $disabledActions = array();
@@ -41,8 +45,8 @@ class SalesOrder extends Eloquent {
 	/* Mass Assignment */
 	protected $fillable = array(
 		'code',
-'sales_date',
-'bank_id', 'is_paid'
+		'sales_date',
+		'bank_id', 'is_paid'
 		);
 	protected $guarded = array('id');
 
@@ -52,9 +56,11 @@ class SalesOrder extends Eloquent {
 'bank_id' => 'required'
 		);
 
+		
 	/* Database Structure */
 	public static function structure()
 	{
+
 		$fields = array(
 			'code' => array(
 			'type' => 'text',
@@ -81,7 +87,7 @@ class SalesOrder extends Eloquent {
 			'onIndex' => true
 )
 			);
-
+			
 		return compact('fields');
 	}
 

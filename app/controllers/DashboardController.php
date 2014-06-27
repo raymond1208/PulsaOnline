@@ -9,11 +9,20 @@ class DashboardController extends BaseController {
 
 		if ($group_id == 1 && $user->hasAccess('dashboard'))
 		{
-			return View::make('dashboard.index');
+			//kode 1 adalah untuk administrator
+			$data['sales_orders'] = SalesOrder::all();
+			/*
+		   $data = array(
+			'sales_orders' => SalesOrder::all()
+			);*/
+			
+			
+		   return View::make('dashboard.index', $data);
 		}
 		
 		if ($group_id == 2 && $user->hasAccess('dashboard'))
 		{
+			//kode 2 adalah untuk konsumen
 			return View::make('dashboard.customerindex');
 		}
 		

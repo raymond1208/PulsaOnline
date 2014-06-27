@@ -12,42 +12,56 @@
 		</ol>
 
 		<div class="page-header">
-		<?php
-			$con=mysqli_connect("127.0.0.1","Raymond","qwerty","pulsaonline");
-
-			// Check connection
-			if (mysqli_connect_errno()) {
-			  echo "Failed to connect to MySQL: " . mysqli_connect_error();
-			}
-		?>
 			<h1>
-				Best Seller Product
-				<small>{{ date('Y-m-d') }}</small>
+				Transaction List for <u>{{ date('F Y') }}</u>
 			</h1>
 
 		</div>
-			<h2>Daftar produk dengan jumlah penjualan terbanyak:</h2><br>
-			<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Jumlah Penjualan</th>
-				</tr>
-			</thead>
-			<tbody>
-			<?php
-				$result = mysqli_query($con,"SELECT  NAME, COUNT(`sales_order_items`.`id`) AS 'Jumlah_Penjualan' FROM `sales_order_items` INNER JOIN `products` ON `products`.`id`=`sales_order_items`.`product_id` GROUP BY `product_id` ORDER BY `Jumlah_Penjualan` DESC;");
-				
-				while($row = mysqli_fetch_array($result)) 
-				{
-					echo "<tr>";
-					echo "<td>" . $row['NAME'] . "</td>";
-					echo "<td>" . $row['Jumlah_Penjualan'] . "</td>";
-					echo "</tr>";
-				}
-			?>
-			</tbody>
-			</table>
+				<div class = "container">
+				 <!-- Awal Form -->
+				 {{ Form::open(array('url' => 'admin/report/', 'method' => 'POST')) }}
+				  
+				  <div class="input-group datepicker col-lg-2" data-date-format="YYYY-MM-DD" style = "float: left; margin-left: -15px;" >
+						{{ Form::text('start_date', Input::get('start_date') ? Input::get('start_date') : date('Y-m-').'1', array('class' => 'form-control', 'id' => 'from')) }}
+						
+							<span class="input-group-addon">
+				   <span class="glyphicon-calendar glyphicon"></span></span>
+						</div>
+				  
+				  <div class="input-group datepicker col-lg-2" data-date-format="YYYY-MM-DD" style = "float: left; margin-left: 50px;">
+							{{ Form::text('end_date', Input::get('end_date') ? Input::get('end_date') : date('Y-m-').'31', array('class' => 'form-control', 'id' => 'to')) }}
+							<span class="input-group-addon">
+				   <span class="glyphicon-calendar glyphicon"></span></span>
+				  </div>
+				  
+				  <span style = "float: left; margin-left: 39px;">
+				   {{ Form::submit('Filter Date', array('class'=>'btn','id'=>'new_button', 'style' => 'color: white; background-color: '.Setting::meta_data('general', 'theme_color')->value )); }}  
+				  </span>
+				  {{ Form::close() }}
+				  <!-- Akhir Form -->
+				 </div>
+				 <br><br>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>Phone Number</th>
+							<th>Product Name</th>
+							<th>Date</th>
+						</tr>
+					</thead>
+					<tbody>
+
+							@foreach($indexFields as $indexField)
+								<tr>
+									<td>{{ $indexField->phone }}</td>
+									<td>{{ $indexField->name }}</td>
+									<td>{{ $indexField->created_at }}</td>
+								</tr>
+							@endforeach
+
+					</tbody>
+				</table>
+				 
 	</div>
 </div>
 

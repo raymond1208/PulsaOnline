@@ -22,6 +22,17 @@ class SalesOrderItem extends Eloquent {
 				}
 				
 
+				
+	public static function boot()
+	{
+		parent::boot();
+	 
+		static::creating(function($record)
+		{
+			$record->status_id = '2';
+		});
+	}
+	
 	/* Disabled Basic Actions */
 	public static $disabledActions = array();
 
@@ -31,19 +42,17 @@ class SalesOrderItem extends Eloquent {
 	/* Mass Assignment */
 	protected $fillable = array(
 		'sales_order_id',
-'phone',
-'product_id',
-'price',
-'status_id'
+		'phone',
+		'product_id',
+		'price'
 		);
 	protected $guarded = array('id');
 
 	/* Rules */
 	public static $rules = array(
 		'phone' => 'required',
-'product_id' => 'required',
-'price' => 'required',
-'status_id' => 'required'
+		'product_id' => 'required',
+		'price' => 'required'
 		);
 
 	/* Database Structure */
@@ -56,11 +65,11 @@ class SalesOrderItem extends Eloquent {
 			'fillable' => false,
 			'editable' => false
 		),
-'phone' => array(
+		'phone' => array(
 			'type' => 'text',
 			'onIndex' => true
 		),
-'product_id' => array(
+		'product_id' => array(
 			'type' => 'select',
 			'onIndex' => true,
 			'table' => 'products',
@@ -71,17 +80,21 @@ class SalesOrderItem extends Eloquent {
 								'Yes'
 								)
 							)
-					),
-'price' => array(
-			'type' => 'number',
-			'onIndex' => true
 		),
-'status_id' => array(
+		'price' => array(
+			'type' => 'number',
+			'onIndex' => true,
+			 'attributes' => array('disabled')
+		),
+		'status_id' => array(
 			'type' => 'select',
-			'onIndex' => true
-	,'table' => 'statuses'
-)
-			);
+			'onIndex' => true,
+			'table' => 'statuses',
+			'attributes' => array('disabled'),
+			'fillable' => false,
+			'selected' => 2
+		)
+);
 
 		return compact('fields');
 	}
