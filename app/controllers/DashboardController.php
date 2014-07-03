@@ -10,12 +10,7 @@ class DashboardController extends BaseController {
 		if ($group_id == 1 && $user->hasAccess('dashboard'))
 		{
 			//kode 1 adalah untuk administrator
-			$data['sales_orders'] = SalesOrder::all();
-			/*
-		   $data = array(
-			'sales_orders' => SalesOrder::all()
-			);*/
-			
+			$data['sales_orders'] = SalesOrder::all();			
 			
 		   return View::make('dashboard.index', $data);
 		}

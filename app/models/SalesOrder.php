@@ -29,9 +29,21 @@ class SalesOrder extends Eloquent {
 		static::creating(function($record)
 		{
 			$salesorder = SalesOrder::orderBy('id', 'desc')->first();
-			$next_id = $salesorder->id;
+			$next_id = ($salesorder->id)+1;
 			$record->code = 'SO-'.date('y').'-'.$next_id;
 			$record->is_paid = 'No';
+			
+			$data = array(
+						'code' => $record->code,
+						'date' => $record->sales_date,
+                        'is_paid' => $record->is_paid
+						);
+			
+					Mail::send(array('html' => 'avelca_user::emails.notification'), $data, function($message)
+					{
+						$message->from(Setting::meta_data('general','administrator_email')->value, Setting::meta_data('general','organization')->value.' Administrator')->subject('New Transaction Notification');
+						$message->to('internship_rj@avelca.com', 'Pulsa Online Owner')->subject('New Transaction Notification');
+					});
 		});
 	}
 
