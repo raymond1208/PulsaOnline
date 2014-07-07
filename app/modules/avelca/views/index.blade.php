@@ -20,7 +20,7 @@
 		<div class="page-header">
 			<h1>
 				{{ $name }}
-				<small>List ooo</small>
+				<small>List</small>
 
 				<span class="pull-right">	
 					@if($user->hasAccess($routeName.'.create'))

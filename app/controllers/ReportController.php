@@ -12,12 +12,14 @@ class ReportController extends \BaseController {
 			$startdate = date('Y-m-').'1';
 			$enddate   = date('Y-m-').'31';
 		
-			$data['indexFields'] = Product::join('sales_order_items', 'products.id', '=', 'sales_order_items.product_id')
-		   ->select('products.name', 'sales_order_items.phone', 'sales_order_items.id', 'sales_order_items.created_at')
+			
+			
+			$data['bestsellers'] = Product::join('sales_order_items', 'products.id', '=', 'sales_order_items.product_id')
+		   ->select('products.name', DB::raw('COUNT(sales_order_items.id) as jumlah_kode'))
 		   ->where('sales_order_items.created_at', '>', $startdate)
 		   ->where('sales_order_items.created_at', '<', $enddate)
-		   ->groupBy('sales_order_items.id')
-		   ->orderBy('sales_order_items.id', 'desc')
+		   ->groupBy('products.name')
+		   ->orderBy('jumlah_kode', 'desc')
 		   ->get(); 
 		   
 			//echo "Function getIndex";
@@ -31,12 +33,12 @@ class ReportController extends \BaseController {
 		  $startdate = Input::get('start_date') ? Input::get('start_date') : date('Y-m-').'1';
 		  $enddate   = Input::get('end_date') ? Input::get('end_date') : date('Y-m-').'31';
 		  
-		  $data['indexFields'] = Product::join('sales_order_items', 'products.id', '=', 'sales_order_items.product_id')
-		   ->select('products.name', 'sales_order_items.phone', 'sales_order_items.id', 'sales_order_items.created_at')
+		  $data['bestsellers'] = Product::join('sales_order_items', 'products.id', '=', 'sales_order_items.product_id')
+		   ->select('products.name', DB::raw('COUNT(sales_order_items.id) as jumlah_kode'))
 		   ->where('sales_order_items.created_at', '>', $startdate)
 		   ->where('sales_order_items.created_at', '<', $enddate)
-		   ->groupBy('sales_order_items.id')
-		   ->orderBy('sales_order_items.id', 'desc')
+		   ->groupBy('products.name')
+		   ->orderBy('jumlah_kode', 'desc')
 		   ->get();  
 		   
 		  //echo "getBestSellerProduct";

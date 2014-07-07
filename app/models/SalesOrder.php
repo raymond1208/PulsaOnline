@@ -28,10 +28,22 @@ class SalesOrder extends Eloquent {
 			
 		static::creating(function($record)
 		{
-			$salesorder = SalesOrder::orderBy('id', 'desc')->first();
-			$next_id = ($salesorder->id)+1;
+			$salesorder = SalesOrder::orderBy('id', 'desc');
+			
+			if($salesorder->count() == 0)
+			{			
+				$next_id = 1;
+			}
+			else
+			{
+				$salesorder = $salesorder->first();
+				$next_id = ($salesorder->id) + 1;
+			}
+			
 			$record->code = 'SO-'.date('y').'-'.$next_id;
 			$record->is_paid = 'No';
+			
+			$record->customer_id = Sentry::getUser()->id;
 			
 			$data = array(
 						'code' => $record->code,
@@ -39,7 +51,7 @@ class SalesOrder extends Eloquent {
                         'is_paid' => $record->is_paid
 						);
 			
-					Mail::send(array('html' => 'avelca_user::emails.notification'), $data, function($message)
+					Mail::pretend(array('html' => 'avelca_user::emails.notification'), $data, function($message)
 					{
 						$message->from(Setting::meta_data('general','administrator_email')->value, Setting::meta_data('general','organization')->value.' Administrator')->subject('New Transaction Notification');
 						$message->to('internship_rj@avelca.com', 'Pulsa Online Owner')->subject('New Transaction Notification');
@@ -97,7 +109,14 @@ class SalesOrder extends Eloquent {
 			),
 			'inline' => true,
 			'onIndex' => true
-)
+),
+
+	'customer_id' => array(
+			'type' => 'select',
+			'fillable' => false,
+			'onIndex' => false,
+			'table' => 'users'
+		)
 			);
 			
 		return compact('fields');

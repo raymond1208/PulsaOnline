@@ -2,9 +2,6 @@
 
 @section('content')
 
-<link type "text/css" rel "stylesheet" href "twitter/css/bootstrap.css"/>
-
-
 <div class="row">
 	<div class="col-md-12">
  
@@ -16,7 +13,7 @@
 		<div class="page-header">
 			<h1>
 				Administrator Dashboard
-				<small>{{ date('Y-m-d') }}</small>
+				<small>{{ date('d-F-Y') }}</small>
 			</h1>
 		</div>
  
@@ -38,7 +35,7 @@
 				@foreach($sales_orders as $sales_order)
 					<tr>
 						<td><a href="{{ URL::to('admin/sales-order/').'?code='.$sales_order->code }}">{{ $sales_order->code }}</a></td>
-						<td>{{ $sales_order->sales_date }}</td>
+						<td>{{ date('d-F-Y',strtotime(str_replace('-','/', $sales_order->sales_date))) }}</td>
 						<td>{{ $sales_order->is_paid }}</td>
 					</tr>
 				@endforeach

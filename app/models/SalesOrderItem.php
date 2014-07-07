@@ -90,7 +90,6 @@ class SalesOrderItem extends Eloquent {
 			'type' => 'select',
 			'onIndex' => true,
 			'table' => 'statuses',
-			'attributes' => array('disabled'),
 			'fillable' => false,
 			'selected' => 2
 		)

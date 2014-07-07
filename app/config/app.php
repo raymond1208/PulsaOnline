@@ -197,7 +197,7 @@ return array(
 		'Setting' 			  => '\App\Modules\Avelca_Setting\Models\Setting',
 		'Permission' 	      => '\App\Modules\Avelca_User\Models\Permission',
 		'AvelcaController'    => '\App\Modules\Avelca\Controllers\AvelcaController',
-		'AvelcaSetting'       => '\App\Modules\Avelca_Setting\Controllers\SettingController',
+		'SettingController'   => '\App\Modules\Avelca_Setting\Controllers\SettingController',
 
 		'Sentry' 			  => 'Cartalyst\Sentry\Facades\Laravel\Sentry',
 		'Theme' 			  => 'Bigecko\LaravelTheme\Facade',

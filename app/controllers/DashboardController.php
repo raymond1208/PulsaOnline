@@ -18,7 +18,7 @@ class DashboardController extends BaseController {
 		if ($group_id == 2 && $user->hasAccess('dashboard'))
 		{
 			//kode 2 adalah untuk konsumen
-			return View::make('dashboard.customerindex');
+			return View::make('dashboard.customer');
 		}
 		
 	}

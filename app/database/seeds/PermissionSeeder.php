@@ -94,6 +94,18 @@ foreach ($permissions as $permission)
 	Permission::create(array("name" => $permission));
 }
 
+/* Settings */
+$permissions = array(
+	'setting.update-announcement'
+);
+ 
+Permission::whereIn('name', $permissions)->delete();
+ 
+foreach ($permissions as $permission)
+{
+	Permission::create(array('name' => $permission));
+}
+
 
 	} /* public function run */
 } /* class */

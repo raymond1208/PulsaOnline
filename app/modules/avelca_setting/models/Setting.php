@@ -8,6 +8,11 @@ class Setting extends Eloquent {
 	protected $table = "settings";
 	public $timestamps = false;
 
+		protected $fillable = array(
+		'category',
+		'meta_data'
+		);
+	
 	public static function meta_data($category, $name)
 	{
 		$setting = Setting::where('category','=',$category)->first()->meta_data;

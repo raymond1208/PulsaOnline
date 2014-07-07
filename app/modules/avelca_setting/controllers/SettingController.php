@@ -12,7 +12,9 @@ use URL;
 use Mail;
 use App\Modules\Avelca_Setting\Models\Setting;
 
-class SettingController extends \BaseController {
+use AvelcaSettingController;
+
+class SettingController extends AvelcaSettingController {
 
 	public function getIndex()
 	{
@@ -35,16 +37,7 @@ class SettingController extends \BaseController {
 			'theme_color' => 'required'
 			);
 
-		$validator = Validator::make(Input::all(), $rules);
-
-		if ($validator->fails())
-		{
-			return Redirect::to('admin/setting')->with('messages', $validator->messages());
-		}
-		else
-		{
-			return $this->updateSetting(Input::get('category'), Input::all());
-		}
+		return $this->updateSetting(Input::get('category'), $rules);
 	}
 
 	public function postUpdateUserManagement()
@@ -59,16 +52,8 @@ class SettingController extends \BaseController {
 			'password_expiry_duration' => 'required|integer'
 			);
 
-		$validator = Validator::make(Input::all(), $rules);
-
-		if ($validator->fails())
-		{
-			return Redirect::to('admin/setting')->with('messages', $validator->messages());
-		}
-		else
-		{
-			return $this->updateSetting(Input::get('category'), Input::all());
-		}
+		return $this->updateSetting(Input::get('category'), $rules);
+		
 	}
 
 	public static function updateSettingValue($category, $key, $value)
@@ -83,59 +68,71 @@ class SettingController extends \BaseController {
 
 	/* Private Functions */
 
-	private function updateSetting($category, $keys)
+	public static function updateSetting($category, $rules = array())
 	{
-		$meta_data = array();
+		$keys = Input::all();
 
-		foreach ($keys as $key => $value)
+		$validator = Validator::make($keys, $rules);
+
+		if ($validator->fails())
 		{
-			if ($key != '_token' && $key != 'category')
-			{
-				if(substr($key, strlen($key) - 5) != '_type' && substr($key, strlen($key) - 8) != '_options' && substr($key, strlen($key) - 5) != '_unit')
-				{
-					if(is_numeric($value))
-					{
-						if(array_key_exists($key.'_type', $keys)) // Radio atau Checkbox
-						{
-							$meta_data[$key]['type'] = $keys[$key.'_type'];
-							$meta_data[$key]['options'] = json_decode($keys[$key.'_options']);
-							$meta_data[$key]['selected'] = $value;
-						}
-						else
-						{
-							$meta_data[$key]['type'] = 'number';
-							$meta_data[$key]['value'] = $value;
-							$meta_data[$key]['unit'] = $keys[$key.'_unit'];							
-						}
-					}
-					else
-					{
-						if(array_key_exists($key.'_options', $keys)) // Select
-						{
-							$meta_data[$key]['type'] = 'select';
-							$meta_data[$key]['options'] = json_decode($keys[$key.'_options']);
-							$meta_data[$key]['selected'] = $value;
-						}
-						elseif(strlen($value) == 7 && substr($value,0,1) == '#') // Color
-						{
-							$meta_data[$key]['type'] = 'color';
-							$meta_data[$key]['value'] = $value;
-						}
-						else
-						{
-							$meta_data[$key]['type'] = 'text';
-							$meta_data[$key]['value'] = $value;
-						}
-					}
-
-				}
-			}
+			return Redirect::to('admin/setting')->with('messages', $validator->messages());
 		}
+		else
+		{
+			$meta_data = array();
 
-		$setting = Setting::where('category','=', $category)->first();
-		$setting->meta_data = json_encode($meta_data);
-		$setting->save();
+			foreach ($keys as $key => $value)
+			{
+				if ($key != '_token' && $key != 'category')
+				{
+					if(substr($key, strlen($key) - 5) != '_type' && substr($key, strlen($key) - 8) != '_options' && substr($key, strlen($key) - 5) != '_unit')
+					{
+						if(is_numeric($value))
+						{
+							if(array_key_exists($key.'_type', $keys)) /* Radio atau Checkbox */
+							{
+								$meta_data[$key]['type'] = $keys[$key.'_type'];
+								$meta_data[$key]['options'] = json_decode($keys[$key.'_options']);
+								$meta_data[$key]['selected'] = $value;
+							}
+							else
+							{	
+								$meta_data[$key]['type'] = 'number';
+								$meta_data[$key]['value'] = $value;
+								$meta_data[$key]['unit'] = $keys[$key.'_unit'];							
+							}
+						}
+						else
+						{
+							if(array_key_exists($key.'_options', $keys)) /* Select */
+							{
+								$meta_data[$key]['type'] = 'select';
+								$meta_data[$key]['options'] = json_decode($keys[$key.'_options']);
+								$meta_data[$key]['selected'] = $value;
+							}
+							elseif(strlen($value) == 7 && substr($value,0,1) == '#') /* Color */
+							{
+								$meta_data[$key]['type'] = 'color';
+								$meta_data[$key]['value'] = $value;
+							}
+							else
+							{
+								$meta_data[$key]['type'] = 'text';
+								$meta_data[$key]['value'] = $value;
+							}
+						}
 
-		return Redirect::to('admin/setting')->with('status', 'Your '.ucwords(str_replace('_',' ',$category)).' Setting have been updated.');
+					}
+				}	
+			}
+
+			$setting = Setting::where('category','=', $category)->first();
+			$setting->meta_data = json_encode($meta_data);
+			$setting->save();
+
+			return Redirect::to('admin/setting')->with('status', 'Your '.ucwords(str_replace('_',' ',$category)).' Setting have been updated.');
+		}
 	}
+
 }

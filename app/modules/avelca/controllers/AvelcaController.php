@@ -1599,18 +1599,12 @@ protected function retrieveRecords()
 
 		?>
 		
-		<?php
-		if( $user->hasAccess(str_replace(' ','-',strtolower($name))) )
-		{
-			echo ('
 			<li>
 				<a href="#"><i class="glyphicon glyphicon-th-large"></i> Master<span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">'
 					.$master.'
 				</ul>
 			</li>');
-		}
-		?>
 		
 		<li>
 			<a href="#"><i class="glyphicon glyphicon-list-alt"></i> Transaction<span class="fa arrow"></span></a>

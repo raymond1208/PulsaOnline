@@ -13,7 +13,7 @@
 
 		<div class="page-header">
 			<h1>
-				Transaction List for <u>{{ date('F Y') }}</u>
+				Best Seller Product for {{ date('F Y') }}
 			</h1>
 
 		</div>
@@ -44,18 +44,17 @@
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th>Phone Number</th>
 							<th>Product Name</th>
-							<th>Date</th>
+							<th>Total</th>
 						</tr>
 					</thead>
 					<tbody>
 
-							@foreach($indexFields as $indexField)
+							@foreach($bestsellers as $bestseller)
 								<tr>
-									<td>{{ $indexField->phone }}</td>
-									<td>{{ $indexField->name }}</td>
-									<td>{{ $indexField->created_at }}</td>
+									<td>{{ $bestseller->name }}</td>
+									<td>{{ $bestseller->jumlah_kode }}</td>
+									
 								</tr>
 							@endforeach
 
