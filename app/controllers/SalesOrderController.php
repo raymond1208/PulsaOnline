@@ -12,14 +12,23 @@ class SalesOrderController extends AvelcaController {
 	{
 		$user = Sentry::getUser();
 		$group_id = $user->groups()->first()->id;
+
+		$records = new SalesOrder;
+
+		$c = get_class($this->Model);
+		$indexFields = $c::structure()['fields'];
+		$records = $this->Model;
+		foreach ($indexFields as $field => $structure) {
+			if (Input::has($field)) {
+				$records = $records->where($field, '=', Input::get($field));
+			}
+		}
 		
-		if($group_id == 1)
+		if($group_id != 1)
 		{
-			return SalesOrder::all();
+			$records = $records->where('customer_id', '=', $user->id)
 		}
-		else
-		{
-			return SalesOrder::where('customer_id', '=', $user->id)->get();
-		}
+	
+		return $records->get();
 	}
 }
