@@ -8,7 +8,7 @@
 
 <p>Transaction Code: {{ $code }}</p>
 <p>Date : {{ $date }}</p>
-<p>Created at : {{ $created }}</p>
+<p>Created at : {{ date('d F Y') }}</p>
 <p>Paid? :{{ $is_paid }}</p>
 
 <p>Please kindly review the transaction by clicking this link.</p>

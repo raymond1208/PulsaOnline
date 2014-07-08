@@ -29,7 +29,7 @@ class SalesOrderItem extends Eloquent {
 	 
 		static::creating(function($record)
 		{
-			$record->status_id = '2';
+				$record->status_id = '2';
 		});
 	}
 	
@@ -90,7 +90,7 @@ class SalesOrderItem extends Eloquent {
 			'type' => 'select',
 			'onIndex' => true,
 			'table' => 'statuses',
-			'fillable' => false,
+			'fillable' => true,
 			'selected' => 2
 		)
 );

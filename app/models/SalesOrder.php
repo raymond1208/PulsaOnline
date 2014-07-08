@@ -86,7 +86,7 @@ class SalesOrder extends Eloquent {
 	{
 
 		$fields = array(
-			'code' => array(
+		'code' => array(
 			'type' => 'text',
 			'fillable' => false,
 			'onIndex' => true
@@ -114,7 +114,7 @@ class SalesOrder extends Eloquent {
 	'customer_id' => array(
 			'type' => 'select',
 			'fillable' => false,
-			'onIndex' => false,
+			'onIndex' => true,
 			'table' => 'users'
 		)
 			);

@@ -9,7 +9,7 @@ class SettingSeeder extends Seeder
 		Setting::create(array('category' => 'announcement', 'meta_data' => '{
 			"message": {
 				"type": "text",
-				"value": "Diskon Hanya bulan ini"
+				"value": "Diskon hanya bulan ini"
 			}
 		}'));
 
