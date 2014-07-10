@@ -19,7 +19,7 @@
 				@if(File::exists(app_path().'/views/admin/'.$routeName.'/view.blade.php'))
 				<li><a href="{{ URL::to('admin/'.$routeName.'/view/'.$record->id) }}">View</a></li>
 				@else
-				<li><a href="#" data-toggle="modal" data-target="#modal_view_{{ $record->id }}">View</a></li>
+				<li><a href="#" data-toggle="modal" data-target="#modal_views_{{ $record->id }}">View</a></li>
 				@endif
 				@endif
 				@endif

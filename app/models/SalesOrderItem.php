@@ -1,6 +1,10 @@
 <?php
 class SalesOrderItem extends Eloquent {
 
+	public static $actionButtons = array(
+		'Additional Action' => 'simple-action'
+		);
+
 	/* Soft Delete */
 	protected $softDelete = true;
 
@@ -88,9 +92,9 @@ class SalesOrderItem extends Eloquent {
 		),
 		'status_id' => array(
 			'type' => 'select',
-			'onIndex' => true,
+			'onIndex' => false,
 			'table' => 'statuses',
-			'fillable' => true,
+			'fillable' => false,
 			'selected' => 2
 		)
 );

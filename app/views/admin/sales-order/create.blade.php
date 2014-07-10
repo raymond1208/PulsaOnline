@@ -49,7 +49,7 @@
 		<thead>
 			<tr>
 				@foreach($indexFields as $field => $structure)
-				@if( $structure['type'] != 'fk')
+				@if( $structure['type'] != 'fk' && $field != 'status_id')
 				<th class="text-center">{{ App\Modules\Avelca\Controllers\AvelcaController::tableHeader($field, $structure) }}</th>
 				@endif
 				@endforeach

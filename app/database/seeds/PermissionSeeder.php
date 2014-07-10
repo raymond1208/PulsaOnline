@@ -66,7 +66,9 @@ foreach ($permissions as $permission)
 			"sales-order.create",
 			"sales-order.view",
 			"sales-order.edit",
-			"sales-order.delete"
+			"sales-order.delete",
+			"sales-order.approve",
+			"sales-order.unapprove"
 			);
 
 Permission::whereIn("name", $permissions)->delete();

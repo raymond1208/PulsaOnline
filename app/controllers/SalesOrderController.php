@@ -32,7 +32,7 @@ class SalesOrderController extends AvelcaController {
 			$records = $records->where('customer_id', '=', $user->id);
 		}
 
-=======
+
 		foreach ($indexFields as $field => $structure) {
 			if (Input::has($field)) {
 				$records = $records->where($field, '=', Input::get($field));
@@ -41,10 +41,28 @@ class SalesOrderController extends AvelcaController {
 		
 		if($group_id != 1)
 		{
-			$records = $records->where('customer_id', '=', $user->id)
+			$records = $records->where('customer_id', '=', $user->id);
 		}
 	
 
 		return $records->get();
 	}
+	
+	public function getApprove($id)
+	{
+		SalesOrder::where('id', '=', $id)->update(array('is_paid' => 'Yes'));
+		SalesOrderItem::where('sales_order_id', '=', $id)->update(array('status_id' => 1));
+		
+		return \Redirect::to(URL::previous())->with('status', get_class($this->Model).' successfully approved.');
+	}
+	
+	public function getUnapprove($id)
+	{
+		SalesOrder::where('id', '=', $id)->update(array('is_paid' => 'No'));
+		
+		return \Redirect::to(URL::previous())->with('status', get_class($this->Model).' successfully un-approved.');
+	}
+	
+	
+	
 }

@@ -1,6 +1,8 @@
 <?php
 class SalesOrder extends Eloquent {
-
+	
+	
+		
 
 	/* Soft Delete */
 	protected $softDelete = true;
