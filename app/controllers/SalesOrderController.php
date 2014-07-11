@@ -59,7 +59,7 @@ class SalesOrderController extends AvelcaController {
 	public function getUnapprove($id)
 	{
 		SalesOrder::where('id', '=', $id)->update(array('is_paid' => 'No'));
-		
+		SalesOrderItem::where('sales_order_id', '=', $id)->update(array('status_id' => 2));
 		return \Redirect::to(URL::previous())->with('status', get_class($this->Model).' successfully un-approved.');
 	}
 	
